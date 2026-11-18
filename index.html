@@ -2,132 +2,137 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#18324b">
-<meta name="description" content="细胞铺板、细菌感染铺板与稀释配比计算器">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icon-192.png">
-<title>实验室铺板计算器</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f7fb">
+<title>实验室计算器</title>
 <style>
-:root{--navy:#18324b;--blue:#2767a8;--bg:#f3f6fa;--ink:#1d2b3a;--muted:#68798b;--line:#dce5ee;--green:#16794b;--soft:#eaf3fb;--orange:#a86613}
+:root{--bg:#f4f7fb;--card:#fff;--ink:#1e293b;--muted:#64748b;--line:#dbe3ee;--blue:#2563eb;--soft:#eff6ff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
-header{background:linear-gradient(135deg,#18324b,#28577b);color:white;padding:23px 17px 19px}header h1{font-size:22px;margin:0 0 4px}header p{margin:0;color:#d4e2ee;font-size:13px}
-main{max-width:760px;margin:auto;padding:14px 12px 36px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
-.tab{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:13px;padding:11px 5px;font:inherit;font-weight:700;font-size:13px}
-.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px #18324b08}
-h2{font-size:17px;margin:0 0 12px}h3{font-size:14px;margin:15px 0 8px;color:var(--navy)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{min-width:0}.full{grid-column:1/-1}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
-input,select{width:100%;min-width:0;border:1px solid #cbd6e2;border-radius:10px;padding:10px 9px;font:inherit;color:var(--ink);background:#fff}
-input:focus,select:focus{outline:2px solid #9fc3ec;border-color:var(--blue)}
-.unitrow{display:grid;grid-template-columns:1fr 1fr;gap:7px}.unitrow.three{grid-template-columns:1fr 1fr 1fr}
-.hint{display:block;color:var(--muted);font-size:11px;margin-top:4px}
-button.action{background:var(--blue);color:white;border:0;border-radius:11px;padding:12px 15px;font-weight:700;width:100%;margin-top:13px;font:inherit}
-.result{background:#edf6f1;border:1px solid #cde7d8;border-radius:12px;padding:13px;margin-top:12px;overflow-wrap:anywhere}
-.result strong{color:var(--green)}.big{font-size:20px;font-weight:800;color:var(--green);margin-bottom:6px}
-.result-row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed #cfe0d5}.result-row:last-child{border:0}
-.note{background:#fff8e8;border:1px solid #f0dfb8;border-radius:11px;padding:11px;color:#75551b;font-size:12px;margin-top:10px}
-.pill{display:inline-block;background:var(--soft);color:#245a89;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:700;margin-bottom:8px}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}footer{text-align:center;color:var(--muted);font-size:11px;padding:8px 14px 20px}
-@media(max-width:420px){.grid{gap:9px}.card{padding:13px}.tab{font-size:12px}.unitrow.three{grid-template-columns:1fr 1fr 1fr}}
+main{max-width:760px;margin:0 auto;padding:18px 14px 40px}h1{font-size:23px;margin:4px 0 5px} .sub{color:var(--muted);margin:0 0 18px;font-size:13px}
+.tabs{display:flex;gap:8px;margin:0 0 14px}.tab{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 6px;font-weight:650;color:#334155}.tab.active{background:var(--blue);color:white;border-color:var(--blue)}
+.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #0f172a08}.panel.active{display:block}
+h2{font-size:18px;margin:0 0 13px}.hint{font-size:12px;color:var(--muted);margin:-5px 0 13px}
+.field{display:grid;grid-template-columns:minmax(112px,1fr) minmax(90px,1.15fr) minmax(100px,auto);gap:8px;align-items:center;margin:10px 0}
+.field label{font-size:13px;color:#334155}.field input,.field select{width:100%;min-width:0;border:1px solid #cbd5e1;border-radius:8px;padding:10px 9px;background:#fff;color:var(--ink);font:inherit}
+.field .unit{min-width:100px;max-width:130px}.field .unit:disabled{background:#f1f5f9;color:#64748b}
+.inline-note{font-size:12px;color:var(--muted);margin:7px 0 12px}
+button.calc{width:100%;border:0;border-radius:9px;padding:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px;margin-top:8px}
+.result{background:var(--soft);border-radius:10px;padding:12px;margin-top:13px;display:none}.result.show{display:block}.result h3{font-size:14px;margin:0 0 7px}.result p{margin:5px 0;font-size:14px}.result strong{color:#1d4ed8}
+.sep{border:0;border-top:1px solid var(--line);margin:15px 0}.small{font-size:12px;color:var(--muted)}
+@media(max-width:430px){main{padding:14px 10px 30px}.panel{padding:13px}.field{grid-template-columns:1fr 1fr 94px;gap:6px}.field label{font-size:12px}.field input,.field select{padding:9px 6px;font-size:14px}.field .unit{min-width:0;width:94px}}
 </style>
 </head>
-<body>
-<header><h1>🧪 实验室铺板计算器</h1><p>细胞铺板 · 细菌感染铺板 · 稀释配比</p></header>
-<main>
-<nav class="tabs" aria-label="计算器分类">
+<body><main>
+<h1>实验室计算器</h1><p class="sub">细胞铺板 · 细菌感染 · 稀释配比</p>
+<nav class="tabs">
 <button class="tab active" data-tab="cells">细胞铺板</button>
-<button class="tab" data-tab="bacteria">细菌铺板</button>
+<button class="tab" data-tab="bacteria">细菌感染</button>
 <button class="tab" data-tab="dilution">稀释配比</button>
 </nav>
 
-<section id="cells" class="panel active">
-<div class="card">
-<span class="pill">模块 1 / 3</span><h2>细胞铺板用量</h2>
-<div class="grid">
-<div class="field full"><label>细胞原液浓度输入方式</label>
-<select id="cellMode"><option value="direct">直接输入浓度</option><option value="count">细胞计数板计算（5个中格 / 80小格）</option></select></div>
-<div id="cellDirect" class="field full"><label>细胞原液浓度</label><div class="unitrow"><input id="cellConc" type="number" min="0" step="any" value="2"><select id="cellConcExp"><option value="6">×10⁶ cells/mL</option><option value="5">×10⁵ cells/mL</option><option value="7">×10⁷ cells/mL</option><option value="8">×10⁸ cells/mL</option><option value="0">cells/mL</option><option value="3">×10³ cells/mL</option><option value="4">×10⁴ cells/mL</option></select></div></div>
-<div id="cellCountBox" class="field full" hidden><label>5个中格（共80小格）总计数 N</label><input id="cellN" type="number" min="0" step="1" value="160"><small class="hint">填写5个中格合计细胞数，不是平均数。</small></div>
-<div id="cellDilBox" class="field" hidden><label>计数前稀释倍数</label><input id="cellDil" type="number" min="1" step="any" value="1"></div>
-<div class="field"><label>每孔目标细胞数</label><div class="unitrow"><input id="cellTarget" type="number" min="0" step="any" value="2"><select id="cellTargetExp"><option value="5">×10⁵ cells</option><option value="4">×10⁴ cells</option><option value="6">×10⁶ cells</option><option value="0">cells</option><option value="3">×10³ cells</option><option value="7">×10⁷ cells</option><option value="8">×10⁸ cells</option></select></div></div>
-<div class="field"><label>每孔终体积（mL）</label><input id="cellVol" type="number" min="0" step="any" value="2"></div>
-<div class="field"><label>实际铺板孔数</label><input id="cellWells" type="number" min="1" step="1" value="6"></div>
-<div class="field"><label>额外多配孔数</label><input id="cellExtra" type="number" min="0" step="1" value="1"></div>
+<section class="panel active" id="cells">
+<h2>细胞铺板</h2>
+<p class="hint">细胞计数板：计数四个角上的大格，按每个大格平均数换算。</p>
+<div class="field"><label for="cellMode">细胞浓度来源</label><select id="cellMode"><option value="direct">直接输入浓度</option><option value="count">根据计数板计算</option></select><span></span></div>
+<div id="cellDirect">
+<div class="field"><label>细胞浓度</label><input id="cellConc" type="number" min="0" step="any" value="1"><select class="unit" id="cellConcExp"><option value="6">×10⁶ cells/mL</option><option value="5">×10⁵ cells/mL</option><option value="7">×10⁷ cells/mL</option><option value="4">×10⁴ cells/mL</option><option value="8">×10⁸ cells/mL</option></select></div>
 </div>
-<button class="action" onclick="calcCells()">计算细胞原液和培养基</button>
-<div id="cellResult" class="result" aria-live="polite">输入参数后点击计算。</div>
-<div class="note">计数板公式：原液浓度（cells/mL）=（N ÷ 4）×10⁵×稀释倍数。N为5个中格合计数（80个小格）。本模块按“实际孔数 + 额外多配孔数”计算总配液量。</div>
+<div id="cellCount" style="display:none">
+<div class="field"><label>四个大格总细胞数 N</label><input id="cellN" type="number" min="0" step="any" placeholder="填写四格总数"><span class="small">个</span></div>
+<div class="field"><label>稀释倍数</label><input id="cellDF" type="number" min="0.000001" step="any" value="1"><span class="small">倍</span></div>
+<p class="inline-note">计算公式：细胞浓度 = (四大格总数 ÷ 4) × 10⁴ × 稀释倍数（cells/mL）。</p>
 </div>
+<hr class="sep">
+<div class="field"><label>每孔目标细胞数</label><input id="targetCell" type="number" min="0" step="any" value="5"><select class="unit" id="targetExp"><option value="5">×10⁵ cells</option><option value="4">×10⁴ cells</option><option value="6">×10⁶ cells</option><option value="3">×10³ cells</option><option value="7">×10⁷ cells</option></select></div>
+<div class="field"><label>每孔铺板体积</label><input id="cellVol" type="number" min="0" step="any" value="1"><select class="unit" id="cellVolUnit"><option value="1">mL</option><option value="0.1">100 μL</option><option value="0.2">200 μL</option><option value="0.5">500 μL</option></select></div>
+<div class="field"><label>实际孔数</label><input id="cellWells" type="number" min="0" step="1" value="6"><span class="small">孔</span></div>
+<div class="field"><label>额外孔数</label><input id="cellExtra" type="number" min="0" step="1" value="1"><span class="small">孔</span></div>
+<button class="calc" onclick="calcCells()">计算细胞悬液与培养基</button>
+<div class="result" id="cellResult"></div>
 </section>
 
-<section id="bacteria" class="panel">
-<div class="card">
-<span class="pill">模块 2 / 3</span><h2>细菌铺板（加入细胞进行感染）</h2>
-<div class="grid">
-<div class="field full"><label>细菌原液浓度输入方式</label><select id="bacMode"><option value="direct">直接输入 CFU/mL</option><option value="count">细菌计数板计算（5个中格 / 80小格）</option></select></div>
-<div id="bacDirect" class="field full"><label>细菌原液浓度</label><div class="unitrow"><input id="bacConc" type="number" min="0" step="any" value="1"><select id="bacConcExp"><option value="8">×10⁸ CFU/mL</option><option value="7">×10⁷ CFU/mL</option><option value="6">×10⁶ CFU/mL</option><option value="9">×10⁹ CFU/mL</option><option value="0">CFU/mL</option><option value="5">×10⁵ CFU/mL</option></select></div></div>
-<div id="bacCountBox" class="field full" hidden><label>5个中格（共80小格）总计数 N</label><input id="bacN" type="number" min="0" step="1" value="400"><small class="hint">填写5个中格合计细菌数。</small></div>
-<div class="field" id="bacDilBox" hidden><label>计数前稀释倍数</label><input id="bacDil" type="number" min="1" step="any" value="1"></div>
-<div class="field"><label>MOI（细菌 : 细胞）</label><input id="moi" type="number" min="0" step="any" value="10"></div>
-<div class="field"><label>细胞浓度</label><div class="unitrow"><input id="infectCellConc" type="number" min="0" step="any" value="2"><select id="infectCellExp"><option value="6">×10⁶ cells/mL</option><option value="5">×10⁵ cells/mL</option><option value="7">×10⁷ cells/mL</option><option value="0">cells/mL</option><option value="4">×10⁴ cells/mL</option></select></div></div>
-<div class="field"><label>每孔细胞悬液体积（mL）</label><input id="infectCellVol" type="number" min="0" step="any" value="2"></div>
-<div class="field"><label>实际感染孔数</label><input id="bacWells" type="number" min="1" step="1" value="6"></div>
-<div class="field"><label>额外多配孔数</label><input id="bacExtra" type="number" min="0" step="1" value="1"></div>
+<section class="panel" id="bacteria">
+<h2>细菌感染</h2>
+<p class="hint">按 MOI 计算每孔及全部孔所需细菌量；细胞数量由细胞浓度 × 每孔细胞悬液体积计算。</p>
+<div class="field"><label>细菌浓度来源</label><select id="bacMode"><option value="direct">直接输入浓度</option><option value="count">根据计数板计算</option></select><span></span></div>
+<div id="bacDirect">
+<div class="field"><label>细菌原液浓度</label><input id="bacConc" type="number" min="0" step="any" value="1"><select class="unit" id="bacConcExp"><option value="8">×10⁸ CFU/mL</option><option value="7">×10⁷ CFU/mL</option><option value="9">×10⁹ CFU/mL</option><option value="6">×10⁶ CFU/mL</option><option value="10">×10¹⁰ CFU/mL</option></select></div>
 </div>
-<button class="action" onclick="calcBacteria()">计算每孔及总共加菌量</button>
-<div id="bacResult" class="result" aria-live="polite">输入参数后点击计算。</div>
-<div class="note">计数板换算采用与细胞模块相同的几何公式：浓度 =（5个中格总计数 N ÷ 4）×10⁵×稀释倍数。这里的浓度单位按 CFU/mL 处理；若使用显微镜直接计数而非活菌 CFU 测定，计算结果代表计数浓度，不等同于活菌 CFU/mL。MOI为每个细胞对应的细菌数。</div>
+<div id="bacCount" style="display:none">
+<div class="field"><label>五个中格总菌数 N</label><input id="bacN" type="number" min="0" step="any" placeholder="填写五个中格总数"><span class="small">个</span></div>
+<div class="field"><label>稀释倍数</label><input id="bacDF" type="number" min="0.000001" step="any" value="1"><span class="small">倍</span></div>
+<p class="inline-note">按五个中格（中央大格内四角加中央）总数计算：浓度 = N × 5 × 10⁴ × 稀释倍数（个/mL）。若要表示 CFU/mL，需确保计数代表活菌菌落/活菌数。</p>
 </div>
+<hr class="sep">
+<div class="field"><label>MOI</label><input id="moi" type="number" min="0" step="any" value="10"><span class="small">细菌:细胞</span></div>
+<div class="field"><label>细胞浓度</label><input id="infectCellConc" type="number" min="0" step="any" value="1"><select class="unit" id="infectCellExp"><option value="6">×10⁶ cells/mL</option><option value="5">×10⁵ cells/mL</option><option value="7">×10⁷ cells/mL</option><option value="4">×10⁴ cells/mL</option></select></div>
+<div class="field"><label>每孔细胞悬液体积</label><input id="infectCellVol" type="number" min="0" step="any" value="1"><select class="unit" id="infectVolUnit"><option value="1">mL</option><option value="0.1">100 μL</option><option value="0.2">200 μL</option><option value="0.5">500 μL</option></select></div>
+<div class="field"><label>实际孔数</label><input id="bacWells" type="number" min="0" step="1" value="6"><span class="small">孔</span></div>
+<div class="field"><label>额外孔数</label><input id="bacExtra" type="number" min="0" step="1" value="1"><span class="small">孔</span></div>
+<button class="calc" onclick="calcBacteria()">计算每孔及总细菌原液量</button>
+<div class="result" id="bacResult"></div>
 </section>
 
-<section id="dilution" class="panel">
-<div class="card">
-<span class="pill">模块 3 / 3</span><h2>稀释配比计算</h2>
-<div class="grid">
-<div class="field"><label>原液浓度 C₁</label><input id="c1" type="number" min="0" step="any" value="100"></div>
-<div class="field"><label>目标浓度 C₂</label><input id="c2" type="number" min="0" step="any" value="10"></div>
-<div class="field"><label>目标总体积 V₂（mL）</label><input id="v2" type="number" min="0" step="any" value="10"></div>
-<div class="field"><label>浓度单位（两者相同）</label><input id="concUnit" value="相同单位"></div>
+<section class="panel" id="dilution">
+<h2>稀释配比</h2>
+<div class="field"><label>计算方式</label><select id="dilMode"><option value="c">按 C₁V₁=C₂V₂ 计算</option><option value="fold">按稀释倍数计算</option></select><span></span></div>
+<div id="dilC">
+<div class="field"><label>原液浓度 C₁</label><input id="c1" type="number" min="0" step="any" value="10"><span class="small">与目标浓度同单位</span></div>
+<div class="field"><label>目标浓度 C₂</label><input id="c2" type="number" min="0" step="any" value="1"><span class="small">同上</span></div>
+<div class="field"><label>最终体积 V₂</label><input id="v2" type="number" min="0" step="any" value="1"><select class="unit" id="v2unit"><option value="mL">mL</option><option value="μL">μL</option></select></div>
 </div>
-<button class="action" onclick="calcDilution()">计算稀释配比</button>
-<div id="dilutionResult" class="result" aria-live="polite">填写参数后计算。</div>
+<div id="dilFold" style="display:none">
+<div class="field"><label>稀释倍数</label><input id="fold" type="number" min="0" step="any" value="10"><span class="small">倍（如 10 即 1:10）</span></div>
+<div class="field"><label>最终配制体积</label><input id="finalVol" type="number" min="0" step="any" value="1"><select class="unit" id="finalUnit"><option value="mL">mL</option><option value="μL">μL</option></select></div>
 </div>
+<button class="calc" onclick="calcDilution()">计算原液 + 培养基/稀释液</button>
+<div class="result" id="dilResult"></div>
+<p class="small">说明：稀释倍数按“最终总体积 ÷ 原液体积”定义。例如 10 倍稀释，原液占最终体积的 1/10。</p>
 </section>
+<p class="small">提示：计数板换算默认使用标准 Neubauer 血球计数板、计数室深度 0.1 mm。细菌计数得到的是计数浓度；只有适用的活菌计数方法才能将其解释为 CFU/mL。</p>
 </main>
-<footer>计算结果为理论配液量；请结合实验方案、计数方法及实验室 SOP 复核。所有计算在本地完成。</footer>
 <script>
-const $=id=>document.getElementById(id), val=id=>Number($(id).value);
-const fmt=x=>Number.isFinite(x)?x.toLocaleString('zh-CN',{maximumFractionDigits:4}):'—';
-const sci=x=>{if(!Number.isFinite(x))return '—';if(x===0)return '0';let e=Math.floor(Math.log10(Math.abs(x))),m=x/10**e;return `${fmt(m)} × 10^${e}`};
-const show=(id,s)=>$(id).innerHTML=s, pos=x=>Number.isFinite(x)&&x>0;
-function conc(id,expId){return val(id)*10**val(expId)}
-function countConc(nId,dilId){return val(nId)/4*1e5*val(dilId)}
+const $=id=>document.getElementById(id);
+const num=id=>Number($(id).value);
+const fmt=x=>Number.isFinite(x)?x.toLocaleString('zh-CN',{maximumFractionDigits:6}):'—';
+function show(id,html){$(id).innerHTML=html;$(id).classList.add('show')}
+function positive(...xs){return xs.every(x=>Number.isFinite(x)&&x>0)}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))}));
-$('cellMode').addEventListener('change',()=>{let c=$('cellMode').value==='count';$('cellDirect').hidden=c;$('cellCountBox').hidden=!c;$('cellDilBox').hidden=!c});
-$('bacMode').addEventListener('change',()=>{let c=$('bacMode').value==='count';$('bacDirect').hidden=c;$('bacCountBox').hidden=!c;$('bacDilBox').hidden=!c});
+$('cellMode').addEventListener('change',()=>{let c=$('cellMode').value==='count';$('cellDirect').style.display=c?'none':'block';$('cellCount').style.display=c?'block':'none'});
+$('bacMode').addEventListener('change',()=>{let c=$('bacMode').value==='count';$('bacDirect').style.display=c?'none':'block';$('bacCount').style.display=c?'block':'none'});
+$('dilMode').addEventListener('change',()=>{let f=$('dilMode').value==='fold';$('dilC').style.display=f?'none':'block';$('dilFold').style.display=f?'block':'none'});
+function getCellConc(){
+ if($('cellMode').value==='count'){let n=num('cellN'),d=num('cellDF');if(n<0||!positive(d))return NaN;return n/4*1e4*d}
+ return num('cellConc')*10**num('cellConcExp');
+}
 function calcCells(){
- let c=$('cellMode').value==='count'?countConc('cellN','cellDil'):conc('cellConc','cellConcExp');
- let t=conc('cellTarget','cellTargetExp'),v=val('cellVol'),w=val('cellWells'),extra=val('cellExtra');
- if(!pos(c)||!pos(t)||!pos(v)||!Number.isInteger(w)||w<1||!Number.isInteger(extra)||extra<0){show('cellResult','<strong>请检查输入：</strong>浓度、目标细胞数、体积须大于0；孔数须为正整数，额外孔数不能为负。');return}
- let totalW=w+extra, perCellMl=t/c, perCellUl=perCellMl*1000, totalCells=t*totalW, stockMl=totalCells/c, finalMl=v*totalW, mediumMl=finalMl-stockMl;
- if(mediumMl<0){show('cellResult','<strong>当前参数不合理：</strong>所需细胞原液体积超过总终体积。请提高原液浓度或增加每孔终体积。');return}
- show('cellResult',`<div class="big">总配液 ${fmt(finalMl)} mL（${totalW}孔）</div><div class="result-row"><span>计算使用的细胞原液浓度</span><strong>${sci(c)} cells/mL</strong></div><div class="result-row"><span>每孔细胞原液</span><strong>${fmt(perCellUl)} μL</strong></div><div class="result-row"><span>每孔培养基</span><strong>${fmt(v*1000-perCellUl)} μL</strong></div><div class="result-row"><span>细胞原液总量（实际+额外）</span><strong>${fmt(stockMl)} mL（${fmt(stockMl*1000)} μL）</strong></div><div class="result-row"><span>培养基总量（实际+额外）</span><strong>${fmt(mediumMl)} mL</strong></div><div class="result-row"><span>总细胞数</span><strong>${sci(totalCells)} cells</strong></div><small>实际孔数 ${w} + 额外多配 ${extra} = 按 ${totalW} 孔配制。</small>`);
+ let conc=getCellConc(),target=num('targetCell')*10**num('targetExp'),vol=num('cellVol')*num('cellVolUnit'),w=num('cellWells'),e=num('cellExtra'),total=w+e;
+ if(!positive(conc,target,vol)||w<1||e<0){show('cellResult','<h3>请检查输入</h3><p>浓度、目标细胞数和体积需大于 0，实际孔数至少为 1。</p>');return}
+ let stockPer=target/conc,mediumPer=vol-stockPer,stock=stockPer*total,medium=mediumPer*total;
+ if(mediumPer<0){show('cellResult','<h3>无法配制</h3><p>每孔所需细胞原液体积大于每孔铺板总体积，请提高细胞浓度或调整目标细胞数。</p>');return}
+ show('cellResult',`<h3>计算结果（共 ${fmt(total)} 孔）</h3><p>计算细胞浓度：<strong>${fmt(conc)} cells/mL</strong></p><p>每孔细胞原液：<strong>${fmt(stockPer)} mL</strong></p><p>每孔培养基：<strong>${fmt(mediumPer)} mL</strong></p><hr class="sep"><p>细胞原液总量：<strong>${fmt(stock)} mL</strong></p><p>培养基总量：<strong>${fmt(medium)} mL</strong></p><p>细胞总数：<strong>${fmt(target*total)} cells</strong></p>`);
+}
+function getBacConc(){
+ if($('bacMode').value==='count'){let n=num('bacN'),d=num('bacDF');if(n<0||!positive(d))return NaN;return n*5e4*d}
+ return num('bacConc')*10**num('bacConcExp');
 }
 function calcBacteria(){
- let bc=$('bacMode').value==='count'?countConc('bacN','bacDil'):conc('bacConc','bacConcExp');
- let moi=val('moi'),cc=conc('infectCellConc','infectCellExp'),cv=val('infectCellVol'),w=val('bacWells'),extra=val('bacExtra');
- if(!pos(bc)||moi<0||!Number.isFinite(moi)||!pos(cc)||!pos(cv)||!Number.isInteger(w)||w<1||!Number.isInteger(extra)||extra<0){show('bacResult','<strong>请检查输入：</strong>菌液浓度、细胞浓度和细胞体积须大于0；MOI不能小于0；孔数须为正整数。');return}
- let totalW=w+extra,cellsPerWell=cc*cv,bacteriaPerWell=cellsPerWell*moi,totalBacteria=bacteriaPerWell*totalW,stockMl=totalBacteria/bc,perWellUl=stockMl/totalW*1000,totalUl=stockMl*1000;
- show('bacResult',`<div class="big">总共加菌液 ${fmt(totalUl)} μL（${totalW}孔）</div><div class="result-row"><span>计算使用的菌液浓度</span><strong>${sci(bc)} CFU/mL</strong></div><div class="result-row"><span>每孔细胞数</span><strong>${sci(cellsPerWell)} cells</strong></div><div class="result-row"><span>每孔所需细菌数（MOI ${fmt(moi)}）</span><strong>${sci(bacteriaPerWell)} CFU</strong></div><div class="result-row"><span>每孔需要加入菌液</span><strong>${fmt(perWellUl)} μL</strong></div><div class="result-row"><span>总细菌数（实际+额外）</span><strong>${sci(totalBacteria)} CFU</strong></div><div class="result-row"><span>菌液总量（实际+额外）</span><strong>${fmt(stockMl)} mL（${fmt(totalUl)} μL）</strong></div><small>实际感染孔数 ${w} + 额外多配 ${extra} = 按 ${totalW} 孔计算。</small>`);
+ let bc=getBacConc(),moi=num('moi'),cc=num('infectCellConc')*10**num('infectCellExp'),cv=num('infectCellVol')*num('infectVolUnit'),w=num('bacWells'),e=num('bacExtra'),total=w+e;
+ if(!positive(bc,cc,cv)||moi<0||w<1||e<0){show('bacResult','<h3>请检查输入</h3><p>细菌浓度、细胞浓度和体积需大于 0，MOI 不能小于 0，实际孔数至少为 1。</p>');return}
+ let cells=cc*cv,bacteria=cells*moi,stockPer=bacteria/bc,stockTotal=stockPer*total;
+ show('bacResult',`<h3>计算结果（共 ${fmt(total)} 孔）</h3><p>每孔细胞数：<strong>${fmt(cells)} cells</strong></p><p>每孔所需细菌数：<strong>${fmt(bacteria)} bacteria</strong></p><p>每孔细菌原液：<strong>${fmt(stockPer*1000)} μL</strong></p><hr class="sep"><p>全部孔所需细菌总数：<strong>${fmt(bacteria*total)}</strong></p><p>细菌原液总量：<strong>${fmt(stockTotal*1000)} μL</strong></p>`);
 }
 function calcDilution(){
- let a=val('c1'),b=val('c2'),v=val('v2');
- if(!pos(a)||b<0||!Number.isFinite(b)||!pos(v)||b>a){show('dilutionResult','<strong>请检查参数：</strong>C₁须大于0，C₂不能小于0或高于C₁，V₂须大于0。');return}
- let x=b*v/a;show('dilutionResult',`<div class="big">取原液 ${fmt(x)} mL</div><div class="result-row"><span>原液体积 V₁</span><strong>${fmt(x)} mL</strong></div><div class="result-row"><span>稀释液/培养基补足</span><strong>${fmt(v-x)} mL</strong></div><div class="result-row"><span>目标总体积</span><strong>${fmt(v)} mL</strong></div><div class="result-row"><span>稀释倍数</span><strong>${fmt(a/b)} 倍</strong></div>`);
+ if($('dilMode').value==='fold'){
+  let f=num('fold'),v=num('finalVol'),unit=$('finalUnit').value;
+  if(!positive(f,v)){show('dilResult','<h3>请检查输入</h3><p>稀释倍数和最终体积需大于 0。</p>');return}
+  let stock=v/f,medium=v-stock;
+  show('dilResult',`<h3>${fmt(f)} 倍稀释，最终体积 ${fmt(v)} ${unit}</h3><p>原液体积：<strong>${fmt(stock)} ${unit}</strong></p><p>培养基/稀释液体积：<strong>${fmt(medium)} ${unit}</strong></p><p>最终总体积：<strong>${fmt(v)} ${unit}</strong></p>`);
+ }else{
+  let c1=num('c1'),c2=num('c2'),v=num('v2'),unit=$('v2unit').value;
+  if(!positive(c1,c2,v)||c2>c1){show('dilResult','<h3>请检查输入</h3><p>浓度和体积需大于 0，目标浓度不能高于原液浓度。</p>');return}
+  let stock=c2/c1*v,medium=v-stock;
+  show('dilResult',`<h3>配制结果</h3><p>原液体积：<strong>${fmt(stock)} ${unit}</strong></p><p>培养基/稀释液体积：<strong>${fmt(medium)} ${unit}</strong></p><p>最终总体积：<strong>${fmt(v)} ${unit}</strong></p><p>相当于 <strong>${fmt(c1/c2)} 倍稀释</strong></p>`);
+ }
 }
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.error));
-</script>
-</body></html>
+</script></body></html>
